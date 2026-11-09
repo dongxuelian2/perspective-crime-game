@@ -1,18 +1,24 @@
-; Perspective Crime — Godot 4 starter project.
-; Edited in the Godot editor after the initial import.
+; A Letter to Nowhere — an original Perspective Crime miniature.
 config_version=5
 
 [application]
-
-config/name="Perspective Crime"
-run/main_scene="res://scenes/main.tscn"
+config/name="A Letter to Nowhere"
+config/description="Carry an unaddressed letter through a city of folding streets. Drag architecture, find impossible seams, and deliver a disappearing place."
+run/main_scene="res://scenes/chapter.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]
-
 window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_height=800
+window/size/window_width_override=1280
+window/size/window_height_override=800
+window/stretch/mode="canvas_items"
+window/size/min_width=960
+window/size/min_height=600
 
 [rendering]
-
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+anti_aliasing/quality/msaa_3d=2
+environment/defaults/default_clear_color=Color(0.025, 0.08, 0.11, 1)

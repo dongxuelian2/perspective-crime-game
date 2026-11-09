@@ -1,42 +1,105 @@
-# Perspective Crime
+# Perspective Crime — Chapter I: A Letter to Nowhere
 
-A small 3D perspective-puzzle game built with **Godot 4**. Two objects that appear to coincide on screen can become physically connected in the game world.
+An offline Godot 4.6.3 spatial puzzle chapter about delivering an unaddressed
+letter through a folding paper city. Five connected districts introduce and
+combine hinged streets, carried platforms, counterweights, impossible seams,
+and selective braces. Original wordless comics frame the delivery.
 
-## Game idea
+## Play
 
-Orbit the camera until two distant anchor points line up in screen space. Enter focus mode and lock the alignment to materialize a walkable bridge in real 3D space. Cross the gap to reach the exit.
+Open `project.godot` in Godot 4.6.3 and press F5, or run `godot --path .`.
+Main scene: `scenes/chapter.tscn`.
 
-**Design principle:** screen-space alignment is the *condition* for creating a bridge; the bridge itself must have an ordinary world-space mesh and collision shape. No teleportation or simulated video-only connection.
+- **Drag brass grips along their visible motion.** The grabbed architecture
+  follows the projected pointer direction; release gently snaps to a dock.
+- **Click a glowing landing** to walk along the current valid route. Hover a
+  landing for a dotted path preview. Dragging is not treated as a click.
+- Board level carriages before folding them upward. The courier is carried by
+  their actual transform. An empty sorting cart acts as another lift's weight.
+- Click a brass pin **while standing beside it** to hold one linked street;
+  other sections can then turn independently.
+- Top-left controls: local restart, optional help, mute, gentle hint.
+  Keyboard: R restarts the district, M toggles audio, Esc dismisses help/gesture.
+- Each district entrance is a checkpoint. There is no required walk back into
+  an earlier district. Replay is available after the closing comic.
 
-## Repository status
+Save format 2 intentionally starts old three-district saves at the new opening:
+those old checkpoints do not describe the revised layouts. New saves resume
+at their current district. `--no-save` isolates development/test sessions.
 
-This repository begins with a runnable graybox scene, two platforms, anchor markers, an orbit camera, and a short design/PR specification. **The perspective-link mechanic and player movement are not implemented yet**; they are the goals of the first contributor PR.
+## Five spatial sequences
 
-## Run locally
+1. **Folded Quay:** join a street, board its level carriage, ride a real folding
+   arm upward, and leave through a separately reconfigured upper route.
+2. **Sorting House:** carry the courier across on a cart; transfer to the lowered
+   lift; send the now-empty cart back as a counterweight. The player stays ahead.
+3. **False Facade:** align two projected landing medallions, cross an explicitly
+   marked space-fold, then deploy the far-side street and an upper lift.
+4. **Hinged Archive:** linked streets cannot all meet their destinations at once.
+   Stand at successive landings and pin completed sections before turning others.
+5. **Undeliverable Tower:** combine riding, phase-linked streets, a brace, a
+   projection seam and a movable receiving street to deliver the letter.
 
-1. Install Godot 4.3 or newer (Godot 4.x).
-2. Open/import `project.godot` in the Godot editor.
-3. Run the project with **F5**.
+The earlier Observatory demo is preserved at commit
+`21fd43954a277ebbe157229f23f387424a636bd3` and `scenes/main.tscn`.
 
-On Linux with Godot in PATH, `godot --path .` starts the current main scene. No remote service or paid asset is required.
+## Collision and movement
 
-### Current graybox controls
+Ordinary navigation uses **CharacterBody3D + capsule + move_and_slide**, with
+solid floors, walls, gate bars/posts, carriage floors and rails. It is no longer
+a tween of the character through scenery. An obstructed route stops and reports
+failure rather than ignoring the obstacle. Walking locks architecture movement.
 
-- **Right mouse drag:** orbit the camera.
-- **Mouse wheel:** zoom.
-- Perspective focus, bridge placement, walking and level completion: planned for PR #1.
+Stationary riders follow level carriage transforms. Each proposed manipulation
+is subdivided and checked against the courier capsule; unsafe movement is rolled
+back. Dock geometry provides actual overlapping walkable surfaces. This is an
+authored puzzle system, not a general rigid-body simulation of folding buildings.
 
-## First playable milestone
+An impossible seam is a deliberate **portal exception**, visibly shrinking and
+restoring the courier between aligned medallions. It is not ordinary walking
+through a wall. Transfer requires actual camera projection alignment, a clear
+capsule destination and a supported landing; collision masks are never disabled.
 
-See [the first PR brief](docs/PR1_SPEC.md), [game design](docs/GAME_DESIGN.md), and [contributor instructions](AGENTS.md).
+## Audio and assets
 
-A successful first PR should make one gap-crossing puzzle playable end to end with visible alignment feedback, physical bridge collision, a controllable character, and a reset path. Keep it small enough to review in one PR.
+The chapter replaces the old synthetic drone/beeps with licensed **Kenney CC0
+Interface/Impact/RPG samples** and **Meta CC0 recorded piano**: wood footsteps,
+paper handling, sparse mechanical creaks, restrained interaction cues and warm
+milestone notes. Footsteps follow actual physics travel. Licenses, original
+sources, conversions and voluntary attribution are in `assets/CREDITS.md` and
+`assets/audio/licenses/`. All shipped audio permits commercial redistribution.
 
-## Project conventions
+Original generated comic/backdrop assets are development assets, not runtime AI.
+No network, model service, telemetry, account or external download is needed.
 
-- Godot 4 / GDScript; desktop-first, Windows and Linux supported.
-- Original primitive geometry and self-created or properly licensed assets.
-- No LLM agents, APIs, accounts, backend, or telemetry.
-- One simple playable mechanic is more valuable than a large unfinished feature list.
+## Architecture
 
-Status: **public game prototype / active development**.
+`input_router.gd` handles pointer capture; `chapter_layouts.gd` authors topology;
+`spatial_mechanism.gd` and `paper_lift.gd` provide physical moving architecture;
+`walkable_graph.gd` derives valid routes; `route_walker.gd` handles collisions;
+`projection_seam.gd` validates topology transfers; `chapter_module.gd` composes a
+district; `game_flow.gd` coordinates checkpoints, safe manipulation and delivery;
+`audio_director.gd`, `chapter_hud.gd` and `narrative_panels.gd` provide presentation.
+
+## Verify and build
+
+```sh
+godot --headless --path . --fixed-fps 60 --script tests/chapter_playthrough.gd -- --no-save
+godot --headless --path . --script tests/route_walker_collision.gd
+godot --headless --path . --fixed-fps 60 --script tests/chapter_stress.gd -- --no-save
+godot --headless --path . --fixed-fps 60 --script tests/chapter_capture.gd -- --no-save
+python3 tools/build.py --install-templates
+```
+
+Use writable HOME/XDG data/config/cache directories. `--audio-check` plays the
+sample palette and exits, without reading/writing player progress. The capture
+script can run graphically with `--write-movie /outside/repo/chapter.avi` and
+`--capture-dir=/outside/repo/evidence` for a real rendered input walkthrough.
+
+Build output: `ALetterToNowhere-linux-x86_64.zip` and
+`ALetterToNowhere-windows-x86_64.zip`, with source revision, packaged-file hashes,
+licenses and instructions. See `docs/BUILD.md` and `docs/CHAPTER_01_TESTING.md`.
+
+This remains a draft development chapter. The 12–20 minute first-time target,
+blind-player difficulty, native Windows runtime, accessibility, and hardware GPU
+performance must not be inferred from automated tests or a known-solution video.

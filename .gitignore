@@ -2,5 +2,11 @@
 .import/
 .export/
 export.cfg
-export_presets.cfg
 *.tmp
+builds/
+__pycache__/
+
+evidence/
+*.avi
+*.wav.tmp
+docs/screenshots/*.import
