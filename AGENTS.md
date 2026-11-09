@@ -1,3 +1,5 @@
+> **Playtest review (2026-11-09):** [Optical illusion, functional architecture, and independent art identity](docs/REVIEW_OPTICAL_IDENTITY_2026-11-09.md). The player's critical feedback takes precedence over the old scripted five-district structure: significantly reduce unused scenery, make visual illusions causally necessary, let players meaningfully manipulate viewpoints and geometry, and establish a visual language independent of *Monument Valley*.
+
 ## Current production target — Chapter I
 
 The next requested work is a **substantial new chapter**, not another graybox or a few added micro-puzzles. Read [Chapter I: A Letter to Nowhere](docs/CHAPTER_01_LETTER_TO_NOWHERE.md) and the [2024–2026 geometry research notes](docs/GEOMETRIC_MECHANICS_REFERENCES.md).
