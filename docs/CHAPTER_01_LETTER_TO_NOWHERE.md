@@ -1,3 +1,5 @@
+> **Playtest review (2026-11-09):** [Optical illusion, functional architecture, and independent art identity](REVIEW_OPTICAL_IDENTITY_2026-11-09.md). The player's critical feedback takes precedence over the old scripted five-district structure: significantly reduce unused scenery, make visual illusions causally necessary, let players meaningfully manipulate viewpoints and geometry, and establish a visual language independent of *Monument Valley*.
+
 # Chapter I — A Letter to Nowhere / 寄往不存在之地的信
 
 Status: creative + engineering brief for the **next major playable chapter**, following the completed Folded Observatory demo in PR #1. This is a new production target, not a claim that the chapter exists.
